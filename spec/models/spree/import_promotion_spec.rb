@@ -80,11 +80,11 @@ describe Spree::ImportPromotion do
     let(:promotion){ import_promotion.promotion }
 
     it 'sets starts_at validation error' do
-      expect(import_promotion.errors[:starts_at][0]).to eq 'Formato invalido'
+      expect(import_promotion.errors[:starts_at][0]).to eq 'Formato tiene que ser DD/MM/AAAA'
     end
 
     it 'sets expires_at validation error' do
-      expect(import_promotion.errors[:expires_at][0]).to eq 'Formato invalido'
+      expect(import_promotion.errors[:expires_at][0]).to eq 'Formato tiene que ser DD/MM/AAAA'
     end
   end
 end
