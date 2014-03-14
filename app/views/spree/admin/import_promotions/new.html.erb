@@ -1,0 +1,66 @@
+<% if @working %>
+  <% content_for :head do %>
+    <meta http-equiv="refresh" content="20">
+  <% end %>
+<% end %>
+
+<% content_for :page_title do  %>
+  Importar promociones
+<% end %>
+
+<fieldset class="field align-center">
+  <legend>Sube tu archivo csv</legend>
+  <%= form_tag admin_import_promotions_path, multipart: true do%>
+    <%= file_field_tag :file %>
+    <%= submit_tag 'Importar promociones' %>
+  <% end %>
+</fieldset>
+
+<fieldset class="field">
+  <%= "Trabajando en la ultima importacion" if @working %>
+  <% @import_promotion_infos.each do |info| %>
+    <table>
+      <tbody>
+        <tr>
+          <td><b>Fecha:<b></td>
+          <td><%= info.created_at %></td>
+        </tr>
+        <tr>
+          <td><b>Procesados</b></td>
+          <td><%= info.import_processed %></td>
+        </tr>
+        <% if info.import_new > 0 %>
+          <tr>
+            <td><b>Creados o sin cambios:</b> (<%= info.import_new %>)</td>
+            <td><%= to_links(info.import_promotion_new).html_safe %></td>
+          </tr>
+        <% end  %>
+        <% if info.import_updated > 0 %>
+          <tr>
+            <td><b>Actualizados:</b> (<%= info.import_updated %>)</td>
+            <td><%= to_links(info.import_promotion_updated).html_safe %></td>
+          </tr>
+        <% end  %>
+      </tbody>
+    </table>
+    <% if info.import_errors > 0 %>
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <b>Errores en la importacion:</b> (<%= info.import_errors %>)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% info.import_promotion_errors.each do |import_promotion_error| %>
+            <tr>
+              <td><%= import_promotion_error.import_errors %></td>
+            </tr>
+          <% end  %>
+        </tbody>
+      </table>
+    <% end  %>
+    <hr>
+  <% end %>
+</fieldset>
